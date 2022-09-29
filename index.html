@@ -35,7 +35,7 @@
   </section>
   <section class="water-access">
     <p>
-      Quality of water and access to water go hand in hand. In India, groundwater abstraction is not regulated, any one can dig their own wells or install pumps. In recent years it has been harder to access water with dugwells and surface schemes.
+      Quality of water and access to water go hand in hand. In India, groundwater abstraction is not regulated, any one can dig their own wells or install pumps. In recent years it has been harder to access water with dugwells and shallow tubewells.
     </p>
     <div class="access-chart"></div>
   </section>
@@ -158,7 +158,7 @@
         .attr("y", 0)
         .attr("width", 36)
         .attr("height", 36)
-        .attr("fill", function(d){return myArsenicColor(d) })
+        .attr("fill", function(d){return myArsenicColor(d) });
       /**
        * Wells
        */
@@ -176,7 +176,7 @@
           d3.min(wellData.years),
           d3.max(wellData.years)
         ])
-        .range([wellsPadding, wellsWidth - wellsPadding]);
+        .range([10 * wellsPadding, wellsWidth - wellsPadding]);
 
       const wellsYScale = d3.scaleLinear()
         .domain([
@@ -200,29 +200,49 @@
       //Create axes
       wellsSvg.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate(0," + (wellsHeight - wellsPadding) + ")")
+        .attr("transform", `translate(0, ${wellsHeight -wellsPadding})`)
         .call(xAxis);
 
       wellsSvg.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate(" + wellsPadding + ",0)")
+        .attr("transform", `translate(${10 * wellsPadding}, 0)`)
         .call(yAxis);
 
-      wellData.data.forEach((source) => {
+      wellsSvg.append("text")
+        .text("Number of wells")
+        .attr("x", wellsPadding)
+        .attr("y", wellsPadding);
+        //.attr("transform", `translate(${ wellsPadding }, ${ wellsPadding })`);
+
+      wellData.data.forEach((source, i) => {
         const line = d3.line()
-							.x(function(d) {
-                return wellsXScale(wellData.years[source.data.indexOf(d)]);
-              })
-							.y(function(d) {
-                return wellsYScale(d);
-              });
+            .curve(d3.curveMonotoneX)
+            .x(function(d) {
+              return wellsXScale(wellData.years[source.data.indexOf(d)]);
+            })
+            .y(function(d) {
+              return wellsYScale(d);
+            });
 
         wellsSvg.append("path")
 					.datum(source.data)
 					.attr("class", "line")
 					.attr("d", line)
           .attr("stroke", source.color)
+          .attr("stroke-width", 5)
           .attr("fill", "none");
+
+        wellsSvg.append("rect")
+          .attr("x", wellsWidth - (32 * wellsPadding))
+          .attr("y", wellsHeight - ((13 + (2 * i)) * wellsPadding))
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("fill", source.color)
+
+        wellsSvg.append("text")
+          .attr("x", wellsWidth - (30 * wellsPadding))
+          .attr("y", wellsHeight - ((12 + (2 * i)) * wellsPadding))
+          .text(source.type);
       })
 
     } catch (e) {

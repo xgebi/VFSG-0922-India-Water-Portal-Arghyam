@@ -2,9 +2,9 @@
   "years": [1987, 1994, 2001, 2007, 2014],
   "data": [
     {
-      "type": "Dugwells (DWs)",
-      "data": [7320586, 4466958, 9617381, 9200191, 8784359],
-      "color": "orange"
+      "type": "Deep Tubewells (DTWs)",
+      "data": [103814, 104309, 530194, 1452964, 2618606],
+      "color":  "black"
     },
     {
       "type": "Shallow Tubewells (STWs) & Medium Tubewells (MTWs)",
@@ -12,9 +12,9 @@
       "color":  "brown"
     },
     {
-      "type": "Deep Tubewells (DTWs)",
-      "data": [103814, 104309, 530194, 1452964, 2618606],
-      "color":  "black"
+      "type": "Dugwells (DWs)",
+      "data": [7320586, 4466958, 9617381, 9200191, 8784359],
+      "color": "red"
     }
   ]
 }
