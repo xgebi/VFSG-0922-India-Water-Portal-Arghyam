@@ -1,0 +1,20 @@
+{
+  "years": [1987, 1994, 2001, 2007, 2014],
+  "data": [
+    {
+      "type": "Dugwells (DWs)",
+      "data": [7320586, 4466958, 9617381, 9200191, 8784359],
+      "color": "orange"
+    },
+    {
+      "type": "Shallow Tubewells (STWs) & Medium Tubewells (MTWs)",
+      "data": [4773071, 5080725, 8355693, 9104665, 9117340],
+      "color":  "brown"
+    },
+    {
+      "type": "Deep Tubewells (DTWs)",
+      "data": [103814, 104309, 530194, 1452964, 2618606],
+      "color":  "black"
+    }
+  ]
+}

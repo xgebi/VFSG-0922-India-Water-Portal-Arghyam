@@ -2,10 +2,238 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>D3 project</title>
-  <script src="dist/index.js"></script>
+  <title>Water crisis in India | India Water Portal/Arghyam</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
+<main>
+  <header>
+    <h1>Water Crisis in India</h1>
+    <h2>Water quality</h2>
+  </header>
+  <section class="water-quality">
+    <p>
+      Water quality in India is an issue. The visualizations below focus on arsenic and fluoride contamination. The darker the color the more districts in a state were contaminated.
+    </p>
+    <section class="arsenic">
+      <h3>Arsenic contamination</h3>
+      <div class="map-arsenic"></div>
+      <div class="scale-wrapper"><div class="left">No contaminated district</div><div class="scale"></div><div class="right">Contamination in all districts</div></div>
+      <br />
+      <div>Grey means no available data.</div>
+    </section>
+    <section class="fluoride">
+      <h3>Fluoride contamination</h3>
+      <div class="map-fluoride"></div>
+      <div class="scale-wrapper"><div class="left">No contaminated district</div><div class="scale"></div><div class="right">Contamination in all districts</div></div>
+      <br />
+      <div>Grey means no available data.</div>
+    </section>
+  </section>
+  <section class="water-access-header">
+    <h2>Disappearing wells</h2>
+  </section>
+  <section class="water-access">
+    <p>
+      Quality of water and access to water go hand in hand. In India, groundwater abstraction is not regulated, any one can dig their own wells or install pumps. In recent years it has been harder to access water with dugwells and surface schemes.
+    </p>
+    <div class="access-chart"></div>
+  </section>
+  <footer>
+    <img src="/VFSG.png" alt="Viz for Social Good logo" />
+  </footer>
+</main>
+<script src="/d3.v7.min.js"></script>
+<script src="/topojson-client.min.js"></script>
+<script type="module">
+  // import {geoEquirectangular} from "https://cdn.skypack.dev/d3-geo-projection@4";
+  // import {geoPath} from "https://cdn.skypack.dev/d3-geo@3";
 
+  async function fetchData() {
+    const topoResponse = await fetch("/india-states.json");
+    if (!topoResponse.ok) {
+      return;
+    }
+    const topo = await topoResponse.json();
+
+    const mapDataResponse = await fetch("/quality.json");
+    if (!mapDataResponse.ok) {
+      return;
+    }
+    const mapData = await mapDataResponse.json();
+
+    const wellDataResponse = await fetch("/wells.json");
+    if (!wellDataResponse.ok) {
+      return;
+    }
+    const wellData = await wellDataResponse.json();
+
+    return {mapData, topo, wellData};
+  }
+
+  async function vizWater() {
+    try {
+      const { mapData, topo, wellData } = (await fetchData());
+      /**
+       * Maps
+       */
+      const mapWidth = 432,
+        mapHeight = 450;
+      const projection = d3.geoEquirectangular().scale(750).translate([-840, 500]);
+
+      const geoPath = d3.geoPath().projection(projection);
+
+      const myFluorideColor = d3.scaleLinear().domain([0,1])
+        .range(["#65c8ff", "#00283d"]) // #006da8
+      const myArsenicColor = d3.scaleLinear().domain([0,1])
+        .range(["#00a83b", "#002f0f"]) // #00a83b
+
+      const colorScale = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1];
+
+      /**
+       * Fluoride map
+       */
+      const fluorideMap = d3.select(".map-fluoride")
+        .append("svg")
+        .attr("width", mapWidth)
+        .attr("height", mapHeight);
+
+      fluorideMap.append("g")
+        .selectAll("path")
+        .data(topojson.feature(topo, topo.objects["IND_adm1"]).features)
+        .enter()
+        .append("path")
+        .attr("d", geoPath)
+        .attr("class", "county")
+        .attr("fill", (d, i) => {
+          if (mapData[d.properties["NAME_1"]]) {
+            const s = mapData[d.properties["NAME_1"]];
+            return myFluorideColor(s.fluorideContamination / s.districtCount)
+          }
+          return "#cecece";
+        });
+
+      const fluorideScale = d3.select(".fluoride .scale").append("svg").attr("width", mapWidth).attr("height",36)
+      fluorideScale
+        .selectAll(".firstrow")
+        .data(colorScale)
+        .enter()
+        .append("rect")
+        .attr("x", function(d,i){return i*36})
+        .attr("y", 0)
+        .attr("width", 36)
+        .attr("height", 36)
+        .attr("fill", function(d){return myFluorideColor(d) })
+
+      /**
+       * Arsenic map
+       */
+      const arsenicMap = d3.select(".map-arsenic")
+        .append("svg")
+        .attr("width", mapWidth)
+        .attr("height", mapHeight);
+
+      arsenicMap.append("g")
+        .selectAll("path")
+        .data(topojson.feature(topo, topo.objects["IND_adm1"]).features)
+        .enter()
+        .append("path")
+        .attr("d", geoPath)
+        .attr("class", "county")
+        .attr("fill", (d, i) => {
+          if (mapData[d.properties["NAME_1"]]) {
+            const s = mapData[d.properties["NAME_1"]];
+            return myArsenicColor(s.arsenicContamination / s.districtCount)
+          }
+          return "#cecece";
+        });
+
+      const arsenicScale = d3.select(".arsenic .scale").append("svg").attr("width", mapWidth).attr("height",36)
+      arsenicScale
+        .selectAll(".firstrow")
+        .data(colorScale)
+        .enter()
+        .append("rect")
+        .attr("x", function(d,i){return i*36})
+        .attr("y", 0)
+        .attr("width", 36)
+        .attr("height", 36)
+        .attr("fill", function(d){return myArsenicColor(d) })
+      /**
+       * Wells
+       */
+      const wellsWidth = 1248,
+        wellsHeight = 400,
+        wellsPadding = 16;
+
+      const wellsSvg = d3.select(".access-chart")
+          .append("svg")
+          .attr("width", wellsWidth)
+          .attr("height", wellsHeight);
+
+      const wellsXScale = d3.scaleLinear()
+        .domain([
+          d3.min(wellData.years),
+          d3.max(wellData.years)
+        ])
+        .range([wellsPadding, wellsWidth - wellsPadding]);
+
+      const wellsYScale = d3.scaleLinear()
+        .domain([
+          d3.min(wellData.data, function (d) {
+            return d3.min(d.data);
+          }),
+          d3.max(wellData.data, function (d) {
+            return d3.max(d.data)
+          })
+        ])
+        .range([wellsHeight - wellsPadding, wellsPadding]);
+
+      //Define axes
+      const xAxis = d3.axisBottom().scale(wellsXScale).tickValues(wellData.years).tickFormat(d3.format("d"));
+        // d3.axisBottom().tickValues(wellData.years);
+
+      //Define Y axis
+      const yAxis = d3.axisLeft()
+        .scale(wellsYScale);
+
+      //Create axes
+      wellsSvg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (wellsHeight - wellsPadding) + ")")
+        .call(xAxis);
+
+      wellsSvg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + wellsPadding + ",0)")
+        .call(yAxis);
+
+      wellData.data.forEach((source) => {
+        const line = d3.line()
+							.x(function(d) {
+                return wellsXScale(wellData.years[source.data.indexOf(d)]);
+              })
+							.y(function(d) {
+                return wellsYScale(d);
+              });
+
+        wellsSvg.append("path")
+					.datum(source.data)
+					.attr("class", "line")
+					.attr("d", line)
+          .attr("stroke", source.color)
+          .attr("fill", "none");
+      })
+
+    } catch (e) {
+
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    console.log('test?');
+    vizWater()
+  })
+</script>
 </body>
 </html>

@@ -1,0 +1,97 @@
+{
+  "Andhra Pradesh": {
+    "districtCount": 26,
+    "arsenicContamination": 0,
+    "fluorideContamination": 16
+  },
+  "Assam": {
+    "districtCount": 35,
+    "arsenicContamination": 0,
+    "fluorideContamination": 2
+  },
+  "Bihar": {
+    "districtCount": 38,
+    "arsenicContamination": 12,
+    "fluorideContamination": 5
+  },
+  "Chhattisgarh": {
+    "districtCount": 32,
+    "arsenicContamination": 1,
+    "fluorideContamination": 2
+  },
+  "Delhi": {
+    "districtCount": 11,
+    "arsenicContamination": 0,
+    "fluorideContamination": 7
+  },
+  "Gujarat": {
+    "districtCount": 33,
+    "arsenicContamination": 0,
+    "fluorideContamination": 18
+  },
+  "Haryana": {
+    "districtCount": 22,
+    "arsenicContamination": 0,
+    "fluorideContamination": 11
+  },
+  "Jammu and Kashmir": {
+    "districtCount": 20,
+    "arsenicContamination": 0,
+    "fluorideContamination": 1
+  },
+  "Jharkhand": {
+    "districtCount": 24,
+    "arsenicContamination": 0,
+    "fluorideContamination": 4
+  },
+  "Karnataka": {
+    "districtCount": 31,
+    "arsenicContamination": 0,
+    "fluorideContamination": 14
+  },
+  "Kerala": {
+    "districtCount": 14,
+    "arsenicContamination": 0,
+    "fluorideContamination": 2
+  },
+  "Maharashtra": {
+    "districtCount": 36,
+    "arsenicContamination": 0,
+    "fluorideContamination": 8
+  },
+  "Madhya Pradesh": {
+    "districtCount": 52,
+    "arsenicContamination": 0,
+    "fluorideContamination": 13
+  },
+  "Odisha ": {
+    "districtCount": 30,
+    "arsenicContamination": 0,
+    "fluorideContamination": 18
+  },
+  "Punjab": {
+    "districtCount": 23,
+    "arsenicContamination": 0,
+    "fluorideContamination": 9
+  },
+  "Rajasthan": {
+    "districtCount": 33,
+    "arsenicContamination": 0,
+    "fluorideContamination": 32
+  },
+  "Tamil Nadu": {
+    "districtCount": 38,
+    "arsenicContamination": 0,
+    "fluorideContamination": 8
+  },
+  "Uttar Pradesh": {
+    "districtCount": 75,
+    "arsenicContamination": 5,
+    "fluorideContamination": 7
+  },
+  "West Bengal": {
+    "districtCount": 23,
+    "arsenicContamination": 8,
+    "fluorideContamination": 7
+  }
+}

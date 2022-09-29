@@ -1,0 +1,112 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr 80em 1fr;
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0;
+    background: #ececec;
+}
+
+main {
+    grid-column: 2 / 3;
+    background: #fdfdfd;
+    display: flex;
+    flex-flow: column;
+    gap: 4rem;
+}
+
+header {
+    background: url("/viz-header.png");
+    height: 400px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+h1, h2 {
+    color: white;
+    text-align: center;
+    width: max-content;
+    position: relative;
+    padding: .5rem 1rem;
+    background: rgba(0, 0, 0, .8);
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 20px;
+    text-align: center;
+}
+
+p {
+    font-size: 20px;
+}
+
+.water-quality,
+.water-access {
+    display: grid;
+    grid-template-columns: 1rem 27rem 12rem 12rem 27rem 1rem;
+}
+
+.water-quality p,
+.water-access p {
+    grid-column: 3 / 5;
+}
+
+.water-quality .arsenic {
+    grid-column: 2 / 4;
+    text-align: center;
+}
+
+.water-quality .fluoride {
+    grid-column: 4 / 6;
+    text-align: center;
+}
+
+.water-access-header {
+    background: url("/wells-header.png");
+    height: 400px;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.water-access-header h2 {
+    margin-top: 16rem;
+}
+
+.water-access .access-chart {
+    grid-column: 2 / 6;
+}
+
+.scale-wrapper {
+    width: 24.75rem;
+    margin: 0 auto;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+footer {
+    text-align: right;
+    padding: 1rem;
+}
+
+footer img {
+    max-width: 33%;
+}
